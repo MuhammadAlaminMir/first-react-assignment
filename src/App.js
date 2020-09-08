@@ -1,26 +1,42 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState, useEffect } from 'react';
 import './App.css';
+import { fakeData } from './fakeData/Data';
+import Courses from './Components/Courses/Courses';
+import Cart from './Components/Cart/Cart';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const [courses, setCourses] = useState([]);
+
+    useEffect(() => {
+        setCourses(fakeData);
+    }, []);
+
+    const [price, setPrice] = useState([]);
+
+    const handleAddToCart = (coursePrice) => {
+        const newPrice = [...price, coursePrice];
+        setPrice(newPrice);
+    };
+    // console.log(price);
+    return (
+        <div className="App">
+            <h1 className="header">Welcome To Our Online class</h1>
+            <div className="main">
+                <div className="courses">
+                    {courses.map((course) => (
+                        <Courses
+                            key={course.id}
+                            course={course}
+                            handleAddToCart={handleAddToCart}
+                        ></Courses>
+                    ))}
+                </div>
+                <div className="cart">
+                    <Cart coursePrice={price}></Cart>
+                </div>
+            </div>
+        </div>
+    );
 }
 
 export default App;
